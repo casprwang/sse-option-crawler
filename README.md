@@ -14,10 +14,12 @@ Make sure you have python3 installed and execute the main.py with
 python3 main.py
 ```
 ![](https://user-images.githubusercontent.com/19645990/30264451-b5f1b04a-96a6-11e7-9400-4f139714e016.png)
+
 Depends on you network, it might take up to a few minutes, be patient.
 
 ## Output file
 After crawling, you will get a CSV file named sing_stock_data.csv has a structure like this:
+
 ![](https://user-images.githubusercontent.com/19645990/30264542-fdd77944-96a6-11e7-84cb-dc863e8ab2b1.png)
 
 ## Source
