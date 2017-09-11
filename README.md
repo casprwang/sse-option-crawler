@@ -18,7 +18,7 @@ python3 main.py
 Depends on you network, it might take up to a few minutes, be patient.
 
 ## Output file
-After crawling, you will get a CSV file named `sing_stock_data.csv` has a structure like this:
+After crawling, you will get a CSV file named `sing_stock_data.csv` with a structure like this:
 
 ![](https://user-images.githubusercontent.com/19645990/30264542-fdd77944-96a6-11e7-84cb-dc863e8ab2b1.png)
 
