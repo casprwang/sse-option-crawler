@@ -9,7 +9,7 @@ git clone https://github.com/wangsongiam/sina-stock-crawler.git && cd sina-stock
 ```
 
 ## Run
-Make sure you have python3 installed and execute the main.py with
+Make sure you have python3 installed and execute the `main.py` with
 ```
 python3 main.py
 ```
