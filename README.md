@@ -3,6 +3,9 @@
 
 ![demo](https://user-images.githubusercontent.com/19645990/30264586-26db6dfa-96a7-11e7-9fa3-10202f26a90f.png)
 
+## Requirement
+* python 3.5+
+
 ## Installation
 ```
 git clone https://github.com/wangsongiam/sina-stock-crawler.git && cd sina-stock-crawler 
