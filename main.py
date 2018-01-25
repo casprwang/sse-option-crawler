@@ -5,11 +5,19 @@ import datetime
 
 # expireDate
 # http://stock.finance.sina.com.cn/futures/api/openapi.php/StockOptionService.getRemainderDay?date=201706
-# frontrow = ['Date', 'ExpireDate', 'OptionType', 'Strike', 'Contract Name', 'Last', 'Bid', 'Ask', 'Change', '%Change', 'Volume', 'OpenInterest', 'ImpliedVolatility', 'UnderlyingPrice']
-frontrow =['Date', '买量', '买价bid', '最新价last', '卖价ask', '卖量', '振幅%change','涨跌幅change', '行权strike','买量', '买价', '最新价', '卖价', '卖量', '振幅','涨跌幅', '行权' ]
+# frontrow = [
+#     'Date', 'ExpireDate', 'OptionType', 'Strike', 'Contract Name', 'Last',
+#     'Bid', 'Ask', 'Change', '%Change', 'Volume', 'OpenInterest',
+#     'ImpliedVolatility', 'UnderlyingPrice'
+# ]
+
+frontrow = [
+    'Date', '买量', '买价bid', '最新价last', '卖价ask', '卖量', '振幅%change', '涨跌幅change',
+    '行权strike', '买量', '买价', '最新价', '卖价', '卖量', '振幅', '涨跌幅', '行权'
+]
 
 
-def match_twins(month:int):
+def match_twins(month: int):
     prefix = 'http://hq.sinajs.cn/list=OP_'
     # suffix = '_51005017'
     suffix = '_510050'
@@ -18,13 +26,7 @@ def match_twins(month:int):
     return (get_paried_urls([url1, url2]))
 
 
-def get_paried_urls(twin_list:list) -> list:
-    # OP_UP_5100501707
-    # OP_DOWN_5100501707
-    # http://hq.sinajs.cn/list=OP_DOWN_5100501707
-    # http://hq.sinajs.cn/list=op_up_5100501707
-    # CON_OP_10000901
-    # CON_OP_10000906
+def get_paried_urls(twin_list: list) -> list:
     urls = []
     paired_url = []
     for url in twin_list:
@@ -35,14 +37,14 @@ def get_paried_urls(twin_list:list) -> list:
 
 def get_all_name(content) -> list:
     quo_pos = content.find('"')
-    seg = content[quo_pos+1:-3]
+    seg = content[quo_pos + 1:-3]
     stock_list = seg.split(',')
     return stock_list[:-1]
 
 
 def re_pair(li) -> list:
     finished_pair = []
-    for i in range( len(li[0]) ):
+    for i in range(len(li[0])):
         middle_pair = []
         middle_pair.append(li[0][i])
         middle_pair.append(li[1][i])
@@ -50,8 +52,8 @@ def re_pair(li) -> list:
 
     return finished_pair
 
-######### PAIR to DATA
-# DATA = match_twins(num)
+
+# PAIR to DATA
 def data_parser(double_query):
     prefix = 'http://hq.sinajs.cn/list='
 
@@ -68,7 +70,7 @@ def data_parser(double_query):
 
 
 # url->
-def get_expire_url(month)->str:
+def get_expire_url(month) -> str:
     prefixDate = 'http://stock.finance.sina.com.cn/futures/api/openapi.php/StockOptionService.getRemainderDay?date='
     url = f'{prefixDate}{str(month)}'
     return url
@@ -81,20 +83,22 @@ def get_expire_date(url_link) -> str:
         return (data['result']['data']['expireDay'])
 
 
-#### Writing to CSV
+# Writing to CSV
 with open('sing_stock_data.csv', 'w', newline='') as csvfile:
     writer = csv.writer(csvfile, delimiter=',')
 
     print('started checking and saving data, it might take a few minutes')
     for i in range(12):
-        date_string = ''.join((datetime.date.today() + datetime.timedelta(i*365/12)).isoformat().split('-'))
+        date_string = ''.join(
+            (datetime.date.today() +
+             datetime.timedelta(i * 365 / 12)).isoformat().split('-'))
         date = get_expire_date(get_expire_url(date_string[:6]))
 
         if len(match_twins(date_string[2:6])) == 0:
-            print (f'no data found in {date_string[4:6]} 月')
+            print(f'no data found in {date_string[4:6]} 月')
         else:
             writer.writerow([f'{date_string[:6]}'])
-            print (f'found data from {date_string[4:6]} 月, start saving')
+            print(f'found data from {date_string[4:6]} 月, start saving')
             writer.writerow(frontrow)
         for pairs in match_twins(date_string[2:6]):
             writer.writerow([date] + data_parser(pairs))
