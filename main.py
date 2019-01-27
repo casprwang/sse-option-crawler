@@ -1,25 +1,29 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-__author__ = "Song Wang"
-__email__ = "wangsongiam@gmail.com"
+__author__ = "Casper Wang"
+__email__ = "casprwang@gmail.com"
 
 # expireDate
 # http://stock.finance.sina.com.cn/futures/api/openapi.php/StockOptionService.getRemainderDay?date=201706
-# FRONTROW = [
-#     'Date', 'ExpireDate', 'OptionType', 'Strike', 'Contract Name', 'Last',
-#     'Bid', 'Ask', 'Change', '%Change', 'Volume', 'OpenInterest',
-#     'ImpliedVolatility', 'UnderlyingPrice'
-# ]
 
 import urllib.request
 import json
 import csv
 import datetime
+
+
 FRONTROW = [
     'Date', '买量', '买价bid', '最新价last', '卖价ask', '卖量', '振幅%change', '涨跌幅change',
     '行权strike', '买量', '买价', '最新价', '卖价', '卖量', '振幅', '涨跌幅', '行权'
 ]
+
+# for EN user
+# FRONTROW = [
+#     'Date', 'ExpireDate', 'OptionType', 'Strike', 'Contract Name', 'Last',
+#     'Bid', 'Ask', 'Change', '%Change', 'Volume', 'OpenInterest',
+#     'ImpliedVolatility', 'UnderlyingPrice'
+# ]
 
 
 def match_twins(month: int) -> list:
@@ -32,7 +36,6 @@ def match_twins(month: int) -> list:
 
 
 def get_paried_urls(twin_list: list) -> list:
-    urls = []
     paired_url = []
     for url in twin_list:
         content = urllib.request.urlopen(url, None).read().decode('GBK')
@@ -89,7 +92,7 @@ def get_expire_date(url_link: str) -> str:
 
 
 # Writing to CSV
-with open('sing_stock_data.csv', 'w', newline='') as csvfile:
+with open('sse_option_data.csv', 'w', newline='') as csvfile:
     writer = csv.writer(csvfile, delimiter=',')
 
     print('started checking and saving data, it might take a few minutes')
